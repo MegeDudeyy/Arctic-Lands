@@ -1,5 +1,4 @@
 var pixelsize = 20;
-var mapsize = 12;
 
 function maploading() {
     ajax_getmapinfo("../php_query/get_map_data.php", "start", true);
@@ -12,14 +11,14 @@ function refreshmap(){
 }
 
 function mapcreate() {
-    for (i = 0; i < ((mapsize * mapsize)); i++) {
+    for (i = 0; i < ((mapsizes * mapsizes)); i++) {
         //This if statement defines the image (background) depending on zone enviroment variable
         var environ = map[i].environ;
         var colour = enviroment[environ].colour;
         //This var creates the x co-ordinate of the box
-        var padheight = (Math.round(Math.floor(map[i].location / mapsize)) * pixelsize);
+        var padheight = (Math.round(Math.floor(map[i].location / mapsizes)) * pixelsize);
         //This var creates the y co-ordinate of the box
-        var padwidth = (((map[i].location + 1) % mapsize) * pixelsize);
+        var padwidth = (((map[i].location + 1) % mapsizes) * pixelsize);
         //This creates a unique identifier for each HTML div
         var ident = ("zone" + i);
         $("#start").append("<div id='"+ident+"' class='zone'>" +
@@ -30,7 +29,7 @@ function mapcreate() {
         $("#unexplored"+i).css("visibility", "visible");
         $("#depleted"+i).css("visibility", "hidden");
         //This creates a static div boarder around the map based on the map size to allow correct formatting
-        var surround = ((mapsize * pixelsize) * 1.1);
+        var surround = ((mapsizes * pixelsize)*1.15);
         $("#surround").css({"height":surround+"px","width":surround+"px"});
     }
     zoneattributes();
@@ -46,7 +45,7 @@ function deplete(x){
 
 function zoneattributes() {
     //This function assigns a listener to each zone on creation that detects if the mouse enters or leaves
-    for (i = 0; i < ((mapsize * mapsize)); i++) {
+    for (i = 0; i < ((mapsizes * mapsizes)); i++) {
         var ident3 = "zone"+i;
         $("#"+ident3).hover(function () {
                 $(this).css("border-color", "blue");
@@ -67,13 +66,14 @@ function infobox(location) {
     $("#players").empty();
     $("#environment").empty();
     var tempzoneid = parseInt(location.slice(4));
+    var enviro = map[tempzoneid].environ;
     var gp = user[usr].playergroup;
+    var yaxis = (Math.round(Math.floor(tempzoneid / mapsizes)))+1;
+    var xaxis = ((tempzoneid) % mapsizes)+1;
+    $("#zonelocation").append("<strong>["+ xaxis+" / "+yaxis+"]</strong>");
     if (group[gp].mapping[tempzoneid] == true) {
         var p = playertest(tempzoneid);
-        var writing1 = zoneinfo(tempzoneid);
-        var yaxis = (Math.round(Math.floor(tempzoneid / mapsize)))+1;
-        var xaxis = ((tempzoneid) % mapsize)+1;
-        $("#zonelocation").append("<strong>["+ xaxis+" / "+yaxis+"]</strong>");
+        var writing1 = zoneinfo(enviro);
         $("#players").append("<strong>Players: </strong>"+p);
         $("#environment").append(writing1);
      }
@@ -97,24 +97,4 @@ function playertest(zone){
         names = "None";
     }
     return names;
-}
-//This gives the information about the zone
-function zoneinfo(loc){
-    switch (map[loc].environ){
-        case 0:
-            return "An empty snow covered field. Maybe there's something below all that snow, but it's probably just more snow...";
-            break;
-        case 1:
-            return "Dirt extends in every direction with just patches of snow remaining. It looks as though someone has been clearing away as much of the snow as they can. You wonder what they may have been looking for...";
-            break;
-        case 2:
-            return "Small spiky bushes stick out from the snow around making it difficult to walk through this zone. You could probably find something to burn here though.";
-            break;
-        case 3:
-            return "Tall trees surround you, making it difficult to find your way. If you could chop them down you could probably make a pretty big fire. At least global warming isn't a concern any more";
-            break;
-        default:
-            return "ERROR";
-        break;
-    }
 }

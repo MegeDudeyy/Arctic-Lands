@@ -103,9 +103,9 @@ function movedirection(dir) {
         $("#loadingscreen").css("visibility", "visible");
         switch (dir) {
             case "n":
-                var test = (Math.round(Math.floor(user[usr].location / mapsize)));
+                var test = (Math.round(Math.floor(user[usr].location / mapsizes)));
                 if (test > 0) {
-                    user[usr].location -= mapsize;
+                    user[usr].location -= mapsizes;
                     move = true;
                     ajax_refreshgroup_data();
                     usestamina(movestamina);
@@ -114,9 +114,9 @@ function movedirection(dir) {
                 }
                 break;
             case "s":
-                var test = ((Math.round(Math.floor(user[usr].location / mapsize))) + 1);
-                if (test < mapsize) {
-                    user[usr].location += mapsize;
+                var test = ((Math.round(Math.floor(user[usr].location / mapsizes))) + 1);
+                if (test < mapsizes) {
+                    user[usr].location += mapsizes;
                     move = true;
                     ajax_refreshgroup_data();
                     usestamina(movestamina);
@@ -125,7 +125,7 @@ function movedirection(dir) {
                 }
                 break;
             case "e":
-                var test = (user[usr].location + 1) % mapsize;
+                var test = (user[usr].location + 1) % mapsizes;
                 if (test != 0) {
                     user[usr].location += 1;
                     move = true;
@@ -136,7 +136,7 @@ function movedirection(dir) {
                 }
                 break;
             case "w":
-                var test = (user[usr].location + 1) % mapsize;
+                var test = (user[usr].location + 1) % mapsizes;
                 if (test != 1) {
                     user[usr].location -= 1;
                     move = true;

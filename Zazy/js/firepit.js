@@ -28,10 +28,17 @@ function dropitem(data){
 }
 
 function dropitem2(data){
+    console.log(data);
+    if (data == "Snowman"){
+        alert("As you watch the snowman melt into the fire a faint scream echos on the wind, sending a shiver down your spine...");
+    }
     d.m.fuel += item[data].fuel;
     if (d.m.fuel < 1){
-        d.m.buildings[3] = 0;
-        ajax_postarray( d.m.buildings, "buildings", "mapzones", d.u.location, "../php_query/post_maparray.php");
+        if (d.m.buildings[3] >= building[3].staminacost) {
+            console.log("Removing firepit");
+            d.m.buildings[3] = 0;
+            ajax_postarray(d.m.buildings, "buildings", "mapzones", d.u.location, "../php_query/post_maparray.php");
+        }
     }
     var rem = d.u.fitems.indexOf(data);
     d.u.fitems.splice(rem, 1, "ZZNone");
@@ -48,7 +55,7 @@ function dropitem2(data){
 
 /////////AJAX/////////
 
-function ajax_builddata(){
+function ajax_firepitdata(){
     $("#loadingscreen").css("visibility", "visible");
     var maps = new XMLHttpRequest();
     maps.open("POST", "../php_query/get_map_zone.php", true);
@@ -60,6 +67,12 @@ function ajax_builddata(){
                 if (d.m.buildings[5] >= building[5].staminacost){
                     if (d.m.groupowner != d.u.playergroup){
                         window.location.href = 'http://www.arctic-lands.online/game/overview.php';
+                    }
+                }
+                if (d.m.fuel < 1){
+                    if (d.m.buildings[3] >= building[3].staminacost) {
+                        d.m.buildings[3] = 0;
+                        ajax_postarray(d.m.buildings, "buildings", "mapzones", d.u.location, "../php_query/post_maparray.php");
                     }
                 }
                 checking = true;

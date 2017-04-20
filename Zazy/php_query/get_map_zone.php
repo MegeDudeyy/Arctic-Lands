@@ -8,13 +8,14 @@ if(isset($_SESSION['mapid'])){
     $testquery = mysqli_query($db_conx, $teststate);
     while ($row = mysqli_fetch_assoc($testquery)){
     	$loc = $row["zonelocation"];
+    	$playergroup = $row['playergroup'];
     	$fitems = $row["fitems"];
     	$bagsize = $row["bagsize"];
     	$stamina = $row["stamina"];
     	$ready = $row["ready"];
         }
 
-        $jsonData = '{"u": { "location":'.$loc.',"fitems":'.$fitems.', "bagsize":'.$bagsize.', "stamina":'.$stamina.', "ready":'.$ready.'},';
+        $jsonData = '{"u": { "location":'.$loc.',"fitems":'.$fitems.', "bagsize":'.$bagsize.', "stamina":'.$stamina.', "ready":'.$ready.', "playergroup":'.$playergroup.'},';
     $teststate = "SELECT * FROM mapzones WHERE mapid='$mapid' AND zonenum='$loc'";
     $testquery = mysqli_query($db_conx, $teststate);
     while ($row = mysqli_fetch_assoc($testquery)){

@@ -9,8 +9,9 @@ if(isset($_SESSION['mapid'])){
     	$mapname = $row["mapname"];
     	$players = $row["players"];
     	$day = $row["day"];
+    	$timer = $row["timer"];
     	$temperature = $row["temperature"];
-		$jsonData = '{"mapname":"'.$mapname .'","players":'.$players.',"day":'.$day.', "temperature":'.$temperature.'}';
+		$jsonData = '{"mapname":"'.$mapname .'","players":'.$players.',"day":'.$day.', "temperature":'.$temperature.', "timer":'.$timer.'}';
     }
     echo $jsonData;
 }

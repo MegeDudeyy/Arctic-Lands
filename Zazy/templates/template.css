@@ -9,7 +9,7 @@
 }
 
 #headerimagewrap{
-    width: 1102px;
+    width: 902px;
     border: 1px solid cornflowerblue;
     float: left;
     position: relative;
@@ -28,13 +28,18 @@
     margin-top: 5px;
     height: 20px;
 }
+#footerwrapper2{
+    border: 2px solid red;
+    margin-top: 5px;
+    text-align: center;
+}
 #loginbox{
     position: relative;
     display: inline-block;
     float: right;
     border: 1px solid red;
     width: 90px;
-    height: 73px;
+    height: 148px;
     text-align: center;
     padding: 5px;
     font-size: 12px;
@@ -43,7 +48,7 @@
 #headerimage{
     position: relative;
     float: left;
-    width: 1000px;
+    width: 800px;
 }
 
 #left{

@@ -38,16 +38,17 @@ function checkplayergroups() {
                                 var reject = 0;
                                 for (i in user) {
                                     if (user[i].playergroup == z) {
-                                        total += 1;
-                                        switch (user[i].agreeinvite[num]) {
-                                            case 1:
-                                                accept += 1;
-                                                break;
-                                            case 2:
-                                                reject += 1;
-                                            default:
-                                                break;
-
+                                        if (user[i].alive == 1) {
+                                            total += 1;
+                                            switch (user[i].agreeinvite[num]) {
+                                                case 1:
+                                                    accept += 1;
+                                                    break;
+                                                case 2:
+                                                    reject += 1;
+                                                default:
+                                                    break;
+                                            }
                                         }
                                     }
                                 }
@@ -76,6 +77,7 @@ function checkplayergroups() {
                                     group[z].invited[num] = 0;
                                     ajax_postarray(group[z].invited, "invited", "ingamegroups", z, "../php_query/post_array_group.php");
                                     ajax_postdata(user[num].playergroup, "playergroup", "ingameavatars", user[num].username, "../php_query/post_data_other.php");
+                                    setTimeout(location.reload, 2000);
                                 } else if (reject > forty) {
                                     for (a in user) {
                                         user[a].agreeinvite[num] = 0;
@@ -83,6 +85,7 @@ function checkplayergroups() {
                                     }
                                     group[z].invited[num] = 0;
                                     ajax_postarray(group[z].invited, "invited", "ingamegroups", z, "../php_query/post_array_group.php");
+                                    setTimeout(location.reload, 2000);
                                 }
                             } else {
                                 console.log("Invite Conflict: Group >1");
@@ -159,6 +162,7 @@ function checkplayergroups() {
                                             ajax_postarray(group[a].mapping, "mapping", "ingamegroups", a, "../php_query/post_array_group.php");
                                             ajax_postarray(group[a].known, "known", "ingamegroups", a, "../php_query/post_array_group.php");
                                             ajax_postdata(user[num].playergroup, "playergroup", "ingameavatars", user[num].username, "../php_query/post_data_other.php");
+                                            setTimeout(location.reload, 2000);
                                         }
                                     }
                                 }
@@ -169,6 +173,7 @@ function checkplayergroups() {
                                 }
                                 group[z].kick[num] = 0;
                                 ajax_postarray(group[z].kick, "kick", "ingamegroups", z, "../php_query/post_array_group.php");
+                                setTimeout(location.reload, 2000);
                             }
                         } else {
                             console.log("Kicking Conflict: group <2");
@@ -229,17 +234,21 @@ function userrefresh(){
     for (y in user){
         if (y != usr) {
             $("#playerbox2").append("<div class='playerdiv' id='playerdiv"+y+"'></div>");
-            if (group[gp].known[y] == 1) {
-                if (user[y].alive == 1){
+            if (user[y].alive == 1) {
+                if (user[y].ready == 1){
+                    $("#playerdiv" + y).css("background-color", "lightgreen");
+                }
+                if (group[gp].known[y] == 1) {
                     $("#playerdiv" + y).append("<div class='playerdivname'><a class='usernamelink' href='user.php?u=" + user[y].username + "'><strong>" + user[y].username + "</strong></a></div>")
-                    .append("<div class='playerdivgroup'><strong>Group: </strong>" + user[y].playergroup + "</div>");
+                        .append("<div class='playerdivgroup'><strong>Group: </strong>" + user[y].playergroup + "</div>");
                 } else {
-                    $("#playerdiv" + y).append("<div class='playerdivname'><strong><strike>" + user[y].username + "</strike></strong></div>")
-                        .append("<div class='playerdivgroup'><strong>DEAD</strong></div>")
+                    $("#playerdiv" + y).append("<div class='playerdivname'>Unknown survivor</div>")
+                        .append("<div class='playerdivgroup'><strong>Group:</strong> Unknown</div>");
                 }
             }else{
-                $("#playerdiv" + y).append("<div class='playerdivname'>Unknown survivor</div>")
-                    .append("<div class='playerdivgroup'><strong>Group:</strong> Unknown</div>");
+                    $("#playerdiv" + y).append("<div class='playerdivname'><strong><strike>" + user[y].username + "</strike></strong></div>")
+                        .append("<div class='playerdivgroup'><strong>DEAD</strong></div>")
+                        .css("background-color", "lightblue");
             }
         }
     }
@@ -282,8 +291,8 @@ function grouprefresh(){
 function zoneplayersrefresh(){
     var count = 0;
     $("#zoneplayersbox").empty().show();
-    var yaxis = (Math.round(Math.floor(user[usr].location / mapsize)))+1;
-    var xaxis = ((user[usr].location + 1) % mapsize);
+    var yaxis = (Math.round(Math.floor(user[usr].location / mapsizes)))+1;
+    var xaxis = ((user[usr].location + 1) % mapsizes);
     $("#zoneplayersbox").append("<strong>Players in zone ["+ xaxis+" / "+yaxis+"]</strong>");
     for (y in user){
         if (user[y].location == user[usr].location) {
@@ -332,24 +341,26 @@ function checkgroupinvites(){
                 $("#checkinginvited" + x).append("<div id='writing" + x + "'><p style='text-align:center;'><span style='float:left;'>Accepted</span>Undecided<span style='float:right;'>Rejected</span></p></div>");
                 for (y in user) {
                     if (user[y].playergroup == gp) {
-                        switch (user[y].agreeinvite[x]) {
-                            case 0:
-                                if (y == usr) {
-                                    $("#checkinginvited" + x).append("<div class='groupplayercenter'><button id='playera" + x + "' onclick='playeropinion(this.id, 1)'>Accept</button>" + user[y].username + "<button id='playerr" + x + "' onclick='playeropinion(this.id, 2)'>Reject</button></div>");
+                        if (user[y].alive == 1) {
+                            switch (user[y].agreeinvite[x]) {
+                                case 0:
+                                    if (y == usr) {
+                                        $("#checkinginvited" + x).append("<div class='groupplayercenter'><button id='playera" + x + "' onclick='playeropinion(this.id, 1)'>Accept</button>" + user[y].username + "<button id='playerr" + x + "' onclick='playeropinion(this.id, 2)'>Reject</button></div>");
+                                        break;
+                                    } else {
+                                        $("#checkinginvited" + x).append("<div class='groupplayercenter'>" + user[y].username + "</div>");
+                                        break;
+                                    }
+                                case 1:
+                                    $("#checkinginvited" + x).append("<div class='groupplayerleft'>" + user[y].username + "</div>");
                                     break;
-                                } else {
-                                    $("#checkinginvited" + x).append("<div class='groupplayercenter'>" + user[y].username + "</div>");
+                                case 2:
+                                    $("#checkinginvited" + x).append("<div class='groupplayerright'>" + user[y].username + "</div>");
                                     break;
-                                }
-                            case 1:
-                                $("#checkinginvited" + x).append("<div class='groupplayerleft'>" + user[y].username + "</div>");
-                                break;
-                            case 2:
-                                $("#checkinginvited" + x).append("<div class='groupplayerright'>" + user[y].username + "</div>");
-                                break;
-                            default:
-                                console.log("ERROR with agree invite variable for player " + user[y].username + ". Array = " + user[y].agreeinvite[x]);
-                                break;
+                                default:
+                                    console.log("ERROR with agree invite variable for player " + user[y].username + ". Array = " + user[y].agreeinvite[x]);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -375,25 +386,27 @@ function checkgroupkicks(){
                 $("#checkinginvited" + x).append("<div id='writing" + x + "'><p style='text-align:center;'><span style='float:left;'>Kick</span>Undecided<span style='float:right;'>Keep</span></p></div>");
                 for (y in user) {
                     if (user[y].playergroup == gp) {
-                        if (y !== x) {
-                            switch (user[y].agreeinvite[x]) {
-                                case 0:
-                                    if (y == usr) {
-                                        $("#checkinginvited" + x).append("<div class='groupplayercenter'><button id='playera" + x + "' onclick='playeropinion(this.id, 1)'>Kick</button>" + user[y].username + "<button id='playerr" + x + "' onclick='playeropinion(this.id, 2)'>Keep</button></div>");
+                        if (user[y].alive == 1) {
+                            if (y !== x) {
+                                switch (user[y].agreeinvite[x]) {
+                                    case 0:
+                                        if (y == usr) {
+                                            $("#checkinginvited" + x).append("<div class='groupplayercenter'><button id='playera" + x + "' onclick='playeropinion(this.id, 1)'>Kick</button>" + user[y].username + "<button id='playerr" + x + "' onclick='playeropinion(this.id, 2)'>Keep</button></div>");
+                                            break;
+                                        } else {
+                                            $("#checkinginvited" + x).append("<div class='groupplayercenter'>" + user[y].username + "</div>");
+                                            break;
+                                        }
+                                    case 1:
+                                        $("#checkinginvited" + x).append("<div class='groupplayerleft'>" + user[y].username + "</div>");
                                         break;
-                                    } else {
-                                        $("#checkinginvited" + x).append("<div class='groupplayercenter'>" + user[y].username + "</div>");
+                                    case 2:
+                                        $("#checkinginvited" + x).append("<div class='groupplayerright'>" + user[y].username + "</div>");
                                         break;
-                                    }
-                                case 1:
-                                    $("#checkinginvited" + x).append("<div class='groupplayerleft'>" + user[y].username + "</div>");
-                                    break;
-                                case 2:
-                                    $("#checkinginvited" + x).append("<div class='groupplayerright'>" + user[y].username + "</div>");
-                                    break;
-                                default:
-                                    console.log("ERROR with agree invite variable for player " + user[y].username + ". Array = " + user[y].agreeinvite[x]);
-                                    break;
+                                    default:
+                                        console.log("ERROR with agree invite variable for player " + user[y].username + ". Array = " + user[y].agreeinvite[x]);
+                                        break;
+                                }
                             }
                         }
                     }
@@ -427,8 +440,8 @@ function ajax_refreshgroup_data(data, type) {
                 group[join].kick[player1] = 1;
                 ajax_postarray(group[join].kick, "kick", "ingamegroups", join, "../php_query/post_array_group.php");
             }
-            checkplayergroups();
-            refreshplayer();
+            console.log("Changing Groups");
+            $("#loadingscreen").css("visibility", "hidden");
         }
     };
     hr.send("var1=true");

@@ -94,13 +94,13 @@ function buildingstab() {
                             }
                             break;
                         case 5:
-                            ident2 = x + "+" + d.u.location;
+                            ident2 = x+"button";
                             $("#" + wrap).append("<button class='buildingbutton' id='" + ident2 + "' onclick='buildingclick(this.id)'></button>");
                             buildinfo = "stamina";
                             innerwriting = d.m.buildings[x] + "/" + building[x].staminacost;
                             itemimage = "../images/stamina2.png";
                             create = true;
-
+                            break;
                     }
                     var ident3 = x + buildinfo;
                     if (create == true) {
@@ -114,10 +114,10 @@ function buildingstab() {
                 var parentid = building[x].parentbuilding;
                 if (testingblank1 !== true || testingblank2 !== true || testingblank3 !== true || testingblank4 !== true) {
                     $("#" + wrap).css("background-image", "url('../images/unexplored.png')");
-                    $("#" + ident2).prop('disabled', true).attr('background-color', 'lightgrey');
+                    $("#" + ident2).prop('disabled', true).css('background-color', 'lightgrey');
                 } else if (d.m.buildings[parentid] != building[parentid].staminacost) {
                     $("#" + wrap).css("background-image", "url('../images/unexplored.png')");
-                    $("#" + ident2).prop('disabled', true).attr('background-color', 'lightgrey');
+                    $("#" + ident2).prop('disabled', true).css('background-color', 'lightgrey');
                 }
             }
             else {
@@ -135,7 +135,11 @@ function buildingstab() {
 }
 
 function buildingclick(id) {
-    ajax_checkzone(id);
+    if (d.u.stamina>0) {
+        ajax_checkzone(id);
+    } else {
+        alert("You do not have enough stamina");
+    }
 }
 
 function buildingcompleted(id){
@@ -166,6 +170,10 @@ function buildingcompleted(id){
                 d.m.fitems.splice(location, 1);
             }
         }
+    }
+    if (id == 3){
+        d.m.fuel = 2;
+        ajax_postdata(d.m.fuel, "fuel", "mapzones", d.u.location, "../php_query/post_mapdata.php")
     }
     if (id == 4){
         d.m.groupowner = d.u.playergroup;
@@ -220,7 +228,7 @@ function ajax_checkzone(id){
                 }
             }
             if (checkdata == d.m.fitems.length) {
-                var idlength = id.indexOf("+");
+                var idlength = id.indexOf("b");
                 var x = parseInt(id.slice(0, idlength));
                 ajax_addbuild(building[x].staminacost, d.u.location, x);
             } else {

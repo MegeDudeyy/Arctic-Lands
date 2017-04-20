@@ -1,17 +1,16 @@
 <?php
-include_once("../login/check_login_status.php");
+include_once("login/check_login_status.php");
 $u = $_SESSION["username"];
-if($user_ok == true){
-    header("location: ../login/login.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="intro.css">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon"/>
     <title>Arctic Lands</title>
 </head>
-<body onload="playerloading()">
+<body>
 <?php include_once("templates/template_pageTop.php"); ?>
 <article>
     <section id="intro">

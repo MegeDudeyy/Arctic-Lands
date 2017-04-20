@@ -8,7 +8,7 @@ function refreshzone(){
 
 function zoneinformation(){
     var env = d.m.environ;
-    var environments = zoneinfo2();
+    var environments = zoneinfo(env);
     var title = enviroment[env].name;
     $("#zoneinformation").empty()
         .append("<div id='zonename'><div>"+title+"</div></div>")
@@ -107,7 +107,7 @@ function itemrandomiser() {
                 ajax_postmap(d.m.depleted, "depleted", "mapzones", loc);
             }
             founditem = enviroment[d.m.environ].items[itemnumber];
-            usestamina(0);
+            usestamina(1);
             if (founditem !== "ZZNone") {
                 d.m.fitems.push(founditem);
                 d.m.fitems.sort();
@@ -140,16 +140,29 @@ function actionchecker() {
                     //This prevents a duplicate
                     var myNode = document.getElementById("itemactions");
                     var duplicates1 = 0;
-                    for (var i=0;i<myNode.options.length;++i){
-                        if (myNode.options[i].value == "Wood"){
-                            duplicates1 +=1;
+                    for (var i = 0; i < myNode.options.length; ++i) {
+                        if (myNode.options[i].value == "Wood") {
+                            duplicates1 += 1;
                         }
                     }
-                    if (duplicates1 <1) {
+                    if (duplicates1 < 1) {
                         //Action for wood
                         $("#itemactions").append("<option value='Wood'>Create a torch</option>");
                     }
                     break;
+                case 2:
+                    //Prevents dupes
+                    var myNode = document.getElementById("itemactions");
+                    var duplicates1 = 0;
+                    for (var i = 0; i < myNode.options.length; ++i) {
+                        if (myNode.options[i].value == "Snow") {
+                            duplicates1 += 1;
+                        }
+                    }
+                    if (duplicates1 < 1) {
+                        //Action for snow
+                        $("#itemactions").append("<option value='Snow'>Create a snowman</option>");
+                    }
             }
         }
     }

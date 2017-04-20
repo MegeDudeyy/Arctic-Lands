@@ -24,14 +24,21 @@ if(isset($_POST['map'])){
             while ($row = mysqli_fetch_assoc($mapsizequery)){
                 $mapsize = $row['mapsize'];
                 $players = $row['maxplayers'];
+                $buildingcount = $row['buildingcount'];
                 }
+            $arraycreate = "[";
+            for ($y=0;$y<$buildingcount;$y++){
+                $arraycreate .= "0,";
+               }
+            $arraycreate = chop($arraycreate,",");
+            $arraycreate .= "]";
             $zones = $mapsize*$mapsize;
             for ($x=0;$x < $zones;$x++){
                 $ztype = rand(0, 3);
-                $createzones = "INSERT INTO mapzones (mapid, zonenum, environ) VALUES ($mapid,$x,$ztype)";
+                $createzones = "INSERT INTO mapzones (mapid, zonenum, environ, buildings) VALUES ($mapid,$x,$ztype,'$arraycreate')";
                 $createzquery = mysqli_query($db_conx, $createzones);
                 }
-            for ($i=0;$i<20;$i++){
+            for ($i=0;$i<$players;$i++){
                 $uservisibility = "[";
                 for ($y=0;$y<$zones;$y++){
                     $uservisibility .= "0,";
