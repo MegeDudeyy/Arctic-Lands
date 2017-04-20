@@ -6,18 +6,19 @@ function item(icon, actions, actionid, information, fuel) {
     this.fuel = fuel //fuel added when placed onto fire (can be negative)
 }
 
-item["Wood"] = new item("items/stickicon2.png", true, 1, "A small stick, it's great for building fires.", 1);
-item["Snow"] = new item("items/snow.png", true, 2, "A ball of snow, not much use to keep you warm and it's not like there's a shortage.", -1);
-item["Torch"] = new item("items/torch2.png", false, 0, "A flaming torch, giver of life, the warming glow draws you close.", 1);
-item["ZZNone"] = new item("items/Empty.png", false, 0, "There's nothing here.", 0);
-item["Snowman"] = new item("items/torch2.png", false, 0, "So you did want to build a Snowman!", -2);
+item["Wood"] = new item("../images/items/stickicon2.png", true, 1, "A small stick, it's great for building fires.", 1);
+item["Snow"] = new item("../images/items/snow.png", true, 2, "A ball of snow, not much use to keep you warm and it's not like there's a shortage.", -1);
+item["Torch"] = new item("../images/items/torch2.png", false, 0, "A flaming torch, giver of life, the warming glow draws you close.", 1);
+item["ZZNone"] = new item("../images/items/Empty.png", false, 0, "There's nothing here.", 0);
+item["Snowman"] = new item("../images/items/snowman2.png", false, 0, "So you did want to build a Snowman!", -2);
+item["Wood Log"] = new item("../images/items/MAX HERE.png", false, 0, "A slightly larger, less pathetic piece of wood", 3);
 
 //ITEM ACTIONS//
 
-function itemvalue() {
+function itemvalue(){
     $("#loadingscreen").css("visibility", "visible");
     var act = document.getElementById("itemactions").value;
-    switch (act) {
+    switch (act){
         case "Wood":
             maketorch();
             break;
@@ -27,7 +28,6 @@ function itemvalue() {
     }
     $("#loadingscreen").css("visibility", "hidden");
 }
-
 
 function maketorch(){
     if (d.m.buildings[3] == building[3].staminacost) {
@@ -42,7 +42,7 @@ function maketorch(){
         } else {
             var itemloc = d.u.fitems.indexOf("Wood");
             d.u.fitems.splice(itemloc, 1, "Torch");
-            //ajax_postarray(d.u.fitems, "fitems", "ingameavatars", d.u.username, "../php_query/post_array.php");
+            ajax_postarray(d.u.fitems, "fitems", "ingameavatars", d.u.username, "../php_query/post_array.php");
             refreshzone();
             alert("You made a torch");
         }
@@ -54,7 +54,6 @@ function maketorch(){
 }
 
 //Snowman creation
-
 function makesnowman() {
     //find the first snow and removes it
     var itemloc1 = d.u.fitems.indexOf("Snow");
@@ -66,19 +65,16 @@ function makesnowman() {
         alert("You need two Snow to do that!");
         //replaces the snow
         d.u.fitems.splice(itemloc1, 1, "Snow");
-        //ajax_postarray(d.u.fitems, "fitems", "ingameavatars", d.u.username, "../php_query/post_array.php");
 
     } else {
         //creates the snowman and alerts the player
         d.u.fitems.splice(itemloc1, 1, "Snowman");
-        d.u.fitems.splice(itemloc2, 1, "ZZNone")
-        //ajax_postarray(d.u.fitems, "fitems", "ingameavatars", d.u.username, "../php_query/post_array.php");
+        d.u.fitems.splice(itemloc2, 1, "ZZNone");
+        ajax_postarray(d.u.fitems, "fitems", "ingameavatars", d.u.username, "../php_query/post_array.php");
         refreshzone();
         alert("You made a Snowman!")
     }
 }
-
-
 
 //ENVIROMENT//
 
@@ -89,9 +85,9 @@ function enviroment(name, items, colour){
 }
 //These are the objects for different enviroment types. They change the items that can be found and the stats about the zone
 enviroment[0] = new enviroment("Dirt plain", ["Wood", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone"], "#DEF095");
-enviroment[1] = new enviroment("Snow Field", ["Wood", "Wood", "Snow", "Snow", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone"], "#CEE9E8");
-enviroment[2] = new enviroment("Lowland shrub", ["Wood", "Wood", "Wood", "Wood", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone"], "#74E950");
-enviroment[3] = new enviroment("Forest", ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Snow", "ZZNone"], "#3C8426");
+enviroment[1] = new enviroment("Snow Field", ["Wood", "Wood", "Snow", "Snow", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "Wood Log", "Wood Log"], "#CEE9E8");
+enviroment[2] = new enviroment("Lowland shrub", ["Wood", "Wood", "Wood", "Wood", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "Wood Log", "Wood Log"], "#74E950");
+enviroment[3] = new enviroment("Forest", ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Snow", "ZZNone", "Wood Log", "Wood Log", "Wood Log", "Wood Log"], "#3C8426");
 
 
 function zoneinfo(id){
@@ -133,9 +129,9 @@ function building(name, parentbuilding, material1, material2, material3, materia
 }
 
 building[0] = new building("BUILDINGS", 0, ["ZZNone", 0], ["ZZNone", 0], ["ZZNone", 0], ["ZZNone", 0], 0, "../images/fence.png");
-building[1] = new building("Fence", 0, ["Snow", 5], ["Wood", 5], ["ZZNone", 0], ["ZZNone", 0], 30, "../images/fence2.png");
-building[2] = new building("Chest", 0, ["Snow", 1], ["Wood", 1], ["ZZNone", 0], ["ZZNone", 0], 10, "../images/storage.png");
-building[3] = new building("Firepit", 0, ["Wood", 3], ["Torch", 1], ["ZZNone", 0], ["ZZNone", 0], 10, "../images/firepit.png");
-building[4] = new building("Outpost", 0, ["Snow", 5], ["Wood", 5], ["ZZNone", 0], ["ZZNone", 0], 30, "../images/outpost.png");
-building[5] = new building("Fence Lock", 4, ["Snow", 1], ["Wood", 1], ["ZZNone", 0], ["ZZNone", 0], 30, "../images/fence-lock.png");
-building[6] = new building("Chest Lock", 4, ["Snow", 1], ["Wood", 1], ["ZZNone", 0], ["ZZNone", 0], 30, "../images/storage-lock.png");
+building[1] = new building("Fence", 0, ["Snow", 5], ["Wood", 5], ["Wood Log", 2], ["ZZNone", 0], 30, "../images/fence2.png");
+building[2] = new building("Chest", 0, ["Snow", 1], ["Wood", 1], ["Wood Log", 1], ["ZZNone", 0], 10, "../images/storage.png");
+building[3] = new building("Firepit", 0, ["Wood", 3], ["Torch", 1], ["Wood Log", 1], ["ZZNone", 0], 10, "../images/firepit.png");
+building[4] = new building("Outpost", 0, ["Snowman", 5], ["ZZNone", 0], ["Wood Log", 3], ["ZZNone", 0], 20, "../images/outpost.png");
+building[5] = new building("Fence Lock", 4, ["Snow", 1], ["Wood", 1], ["ZZNone", 0], ["ZZNone", 0], 8, "../images/fence-lock.png");
+building[6] = new building("Chest Lock", 4, ["Snow", 1], ["Wood", 1], ["ZZNone", 0], ["ZZNone", 0], 8, "../images/storage-lock.png");
