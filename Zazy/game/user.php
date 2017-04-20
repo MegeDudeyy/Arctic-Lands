@@ -1,19 +1,20 @@
 <?php
 include_once("../login/check_login_status.php");
 // Initialize any variables that the page might echo
-$u = "";
+$u = preg_replace('#[^A-Za-z0-9]#i', '', $_SESSION["username"]);
+$userna = "";
 $userlevel = "";
 $joindate = "";
 $lastsession = "";
 // Make sure the _GET username is set, and sanitize it
 if(isset($_GET["u"])){
-	$u = preg_replace('#[^a-z0-9]#i', '', $_GET['u']);
+	$userna = preg_replace('#[^A-Za-z0-9]#i', '', $_GET['u']);
 } else {
     header("location: ../login/login.php");
     exit();
 }
 // Select the member from the users table
-$sql = "SELECT * FROM users WHERE username='$u' AND activated='1' LIMIT 1";
+$sql = "SELECT * FROM users WHERE username='$userna' AND activated='1' LIMIT 1";
 $user_query = mysqli_query($db_conx, $sql);
 // Now make sure that user exists in the table
 $numrows = mysqli_num_rows($user_query);
@@ -23,14 +24,15 @@ if($numrows < 1){
 }
 // Check to see if the viewer is the account owner
 $isOwner = "no";
-if($u == $log_username && $user_ok == true){
+if($userna == $u && $user_ok == true){
 	$isOwner = "yes";
 }
 // Select the member from the achievements table
-$sql2 = "SELECT * FROM userachievements WHERE username='$u' LIMIT 1";
+$sql2 = "SELECT * FROM userachievements WHERE username='$userna' LIMIT 1";
 $achieve_query = mysqli_query($db_conx, $sql2);
 // Fetch the user row from the query above
 while ($row = mysqli_fetch_array($user_query, MYSQLI_ASSOC)) {
+    $user = $row["username"];
 	$profile_id = $row["id"];
 	$signup = $row["signup"];
 	$lastlogin = $row["lastlogin"];
@@ -41,6 +43,7 @@ while ($row = mysqli_fetch_array($user_query, MYSQLI_ASSOC)) {
 while ($row = mysqli_fetch_array($achieve_query, MYSQLI_ASSOC)) {
     $alphas = $row["alphas"];
     $betas = $row["betas"];
+    $bugs = $row["Bug Reports"];
 }
 if ($currentgame != 0){
      $mpname = "Currently in a game";
@@ -56,14 +59,14 @@ if ($currentgame != 0){
 <html>
 <head>
 <meta charset="UTF-8">
-<title><?php echo $u; ?></title>
+<title><?php echo $user; ?></title>
 <link rel="stylesheet" href="../login/signup.css">
 <script src="../js/ajax.js"></script>
 </head>
 <body>
 <?php include_once("../templates/template_pageTop.php"); ?>
 <div id="pageMiddle">
-  <h3><?php echo $u; ?></h3>
+  <h3><?php echo $user; ?></h3>
   <p><b><?php
     if ($isOwner == "yes"){
     echo "This is your profile page";
@@ -74,6 +77,7 @@ if ($currentgame != 0){
   <p>Currently in game: <?php echo $mpname; ?></p>
   <p>Alpha tests played: <?php echo $alphas; ?></p>
   <p>Beta tests played: <?php echo $betas; ?></p>
+  <p>Bugs reported: <?php echo $bugs; ?></p>
 </div>
 <?php include_once("../templates/template_pageBottom.php"); ?>
 </body>

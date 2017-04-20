@@ -21,7 +21,7 @@
 /*The grey box surrounding the map*/
 #surround {
     border: 3px solid black;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
     position: static;
     z-index: 1;
     background: gray;
@@ -62,10 +62,23 @@
 #HUD{
     border: 1px solid red;
     min-width: 100px;
-    height: 400px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#daynumber{
+    border: 1px dotted black;
+    margin: 10px 5px 0 5px;
+    padding: 5px;
+}
+
+#hudtimer{
+    border: 1px dotted black;
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 /*This is the game menu that allows the player to navigate between pages*/
@@ -491,6 +504,15 @@ a.menulink2:visited, a.menulink2:link {
     transform-origin: 50% 75%;
 }
 
+.cmenutab{
+    margin: 10px 0 10px 20px;
+}
+
+.tabimage1{
+    width: 30px;
+    height: 100px;
+}
+
 #tempwrapper{
     margin: 10px 3px 0 3px;
     border: 1px solid black;
@@ -539,7 +561,7 @@ a.menulink2:visited, a.menulink2:link {
 /*This is the first building material required*/
 .buildingmatt{
     border-right: 1px dashed grey;
-    width: 50px;
+    width: 80px;
     height:inherit;
     position: inherit;
     font-size: inherit;
@@ -564,7 +586,7 @@ a.menulink2:visited, a.menulink2:link {
 }
 
 /*This is the building button*/
-.buildingbutton{
+.buildingbutton {
     height: 12px;
     width: 13px;
     font-size: 10px;
@@ -572,7 +594,6 @@ a.menulink2:visited, a.menulink2:link {
     background-color: lightgreen;
     align-content: center;
 }
-
 #firepitimage{
     width: 350px;
     height: 350px;
@@ -609,7 +630,7 @@ a.menulink2:visited, a.menulink2:link {
     align-content: center;
 }
 
-#readywrap{
+#readywrap {
     padding: 5px;
     margin: 5px;
     display: flex;
@@ -617,6 +638,65 @@ a.menulink2:visited, a.menulink2:link {
     align-items: center;
 }
 
-#readywriting{
-    padding: 3px;
+#readyimage:hover{
+    cursor: hand;
+}
+
+#chatwrapper{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 42px 0 0 10px;
+    padding: 0 0 0 10px;
+    align-items: center;
+}
+
+#chatbox{
+    border: 1px solid black;
+    padding: 10px;
+    height: 370px;
+    width: inherit;
+}
+
+#inputchat{
+    margin: 3px;
+    width: inherit;
+}
+
+#submittext{
+    width: 50px;
+}
+
+#banktab2{
+    background: url('http://www.arctic-lands.online/images/storage-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#banktab2:hover{
+    background: url('http://www.arctic-lands.online/images/storage-tab2.png');
+}
+
+#firetab2{
+    background: url('http://www.arctic-lands.online/images/firepit-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#firetab2:hover{
+    background: url('http://www.arctic-lands.online/images/firepit-tab2.png');
+}
+#buildingtab2{
+    background: url('http://www.arctic-lands.online/images/buildings-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#buildingtab2:hover{
+    background: url('http://www.arctic-lands.online/images/buildings-tab2.png');
+}
+#overview2{
+    background: url('http://www.arctic-lands.online/images/overview-tab.png');
+    width: 30px;
+    height: 100px;
+}
+#overview2:hover{
+    background: url('http://www.arctic-lands.online/images/overview-tab2.png');
 }

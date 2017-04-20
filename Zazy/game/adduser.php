@@ -27,7 +27,12 @@ while ($row = mysqli_fetch_assoc($mapsizequery)){
     $bagsize = $row['bagsize'];
     $maxplayers = $row['maxplayers'];
 }
-$zones = $mapsize*$mapsize;
+$zones = ($mapsize*$mapsize)-1;
+if ($count >= ($maxplayers-1)){
+    $timer = round(microtime(true) * 1000);
+    $full_state = "UPDATE maps SET active='a', timer='$timer' WHERE mapid='$map'";
+    $full_query = mysqli_query($db_conx, $full_state);
+}
 $addplayer = "UPDATE maps SET players=players+1 WHERE mapid='$map'";
 $mapquery = mysqli_query($db_conx, $addplayer);
 //This adds the player to the useravatar table

@@ -14,7 +14,7 @@ if ($ingame_check > 0){
     $gamecheckquery = mysqli_query($db_conx, $gamecheck);
     $row = mysqli_fetch_row($gamecheckquery);
     $mapid = $row[0];
-    $gameconfirm = "SELECT * FROM ingameavatars WHERE username='$u' AND mapid='$mapid'";
+    $gameconfirm = "SELECT * FROM ingameavatars WHERE username='$u' AND mapid='$mapid' AND alive='1'";
     $gameconfirmquery = mysqli_query($db_conx, $gameconfirm);
     $ingametrue = mysqli_num_rows($gameconfirmquery);
     if ($ingametrue > 0){
@@ -26,7 +26,7 @@ if ($ingame_check > 0){
     }
 }
 //This section gets the current games available
-$availmpqry = "SELECT * FROM maps WHERE active!='d'";
+$availmpqry = "SELECT * FROM maps WHERE active = 's'";
 $map_query = mysqli_query($db_conx, $availmpqry);
 ?>
 <!DOCTYPE html>
