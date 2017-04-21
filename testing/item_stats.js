@@ -85,9 +85,9 @@ function enviroment(name, items, colour){
 }
 //These are the objects for different enviroment types. They change the items that can be found and the stats about the zone
 enviroment[0] = new enviroment("Dirt plain", ["Wood", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone", "ZZNone"], "#DEF095");
-enviroment[1] = new enviroment("Snow Field", ["Wood", "Wood", "Snow", "Snow", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "Wood Log", "Wood Log"], "#CEE9E8");
-enviroment[2] = new enviroment("Lowland shrub", ["Wood", "Wood", "Wood", "Wood", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "Wood Log", "Wood Log"], "#74E950");
-enviroment[3] = new enviroment("Forest", ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Snow", "ZZNone", "Wood Log", "Wood Log", "Wood Log", "Wood Log"], "#3C8426");
+enviroment[1] = new enviroment("Snow Field", ["Wood", "Wood", "Snow", "Snow", "Snow", "Snow", "ZZNone", "ZZNone", "ZZNone", "Wood Log"], "#CEE9E8");
+enviroment[2] = new enviroment("Lowland shrub", ["Wood", "Wood", "Wood", "Wood", "Snow", "Snow", "ZZNone", "ZZNone", "Wood Log", "Wood Log"], "#74E950");
+enviroment[3] = new enviroment("Forest", ["Wood", "Wood", "Wood", "Wood", "Wood", "Wood", "Snow", "ZZNone", "Wood Log", "Wood Log"], "#3C8426");
 
 
 function zoneinfo(id){
